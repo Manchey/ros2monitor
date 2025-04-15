@@ -17,10 +17,10 @@ ROS2 Monitor is a Terminal User Interface (TUI) tool for monitoring ROS2 topics,
 ### Screenshots
 
 #### Topic List View
-![Topic List View](docs/images/topic_view.jpg)
+![Topic List View](docs/images/topic_view.png)
 
 #### Message Detail View
-![Message Detail View](docs/images/message_view.jpg)
+![Message Detail View](docs/images/message_view.png)
 
 ### Installation
 
@@ -66,10 +66,10 @@ ROS2 Monitor 是一个终端用户界面（TUI）工具，用于监控ROS2话题
 ### 界面展示
 
 #### 话题列表视图
-![话题列表视图](docs/images/topic_view.jpg)
+![话题列表视图](docs/images/topic_view.png)
 
 #### 消息详情视图
-![消息详情视图](docs/images/message_view.jpg)
+![消息详情视图](docs/images/message_view.png)
 
 ### 安装方法
 
