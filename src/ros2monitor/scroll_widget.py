@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-#
-# Copyright (C) 2022 Hirain Technologies - All Rights Reserved
-#
 
 
 class ScrollWidget:
@@ -16,7 +13,7 @@ class ScrollWidget:
         self._top = 0
         self._end = 0
 
-        self._highlight_color = 'y'
+        self._highlight_color = "y"
 
     def resize(self):
         self._height, self._width = self._screen.getmaxyx()

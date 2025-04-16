@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-#
-# Copyright (C) 2022 Hirain Technologies - All Rights Reserved
-#
 
 from .scroll_widget import ScrollWidget
 
@@ -29,11 +26,11 @@ class TopicWidget(ScrollWidget):
 
     def render(self):
         self.refresh_topic()
-        self._screen.addstr(0, 0, ' ' * (self._width - 1), 'b')
-        self._screen.addstr(0, self._column_width * 0, 'topic_name', 'b')
-        self._screen.addstr(0, self._column_width * 1, 'topic_type', 'b')
+        self._screen.addstr(0, 0, " " * (self._width - 1), "b")
+        self._screen.addstr(0, self._column_width * 0, "topic_name", "b")
+        self._screen.addstr(0, self._column_width * 1, "topic_type", "b")
         topics = self._topic_monitor._topics
         for idx, item in enumerate(list(topics.items())):
             topic_name, topic_item = item
-            self.render_scroll_line(idx, self._column_width * 0, topic_name, 'w')
-            self.render_scroll_line(idx, self._column_width * 1, topic_item['type'], 'w')
+            self.render_scroll_line(idx, self._column_width * 0, topic_name, "w")
+            self.render_scroll_line(idx, self._column_width * 1, topic_item["type"], "w")

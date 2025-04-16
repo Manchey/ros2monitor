@@ -1,12 +1,9 @@
 #!/usr/bin/env python
-#
-# Copyright (C) 2022 Hirain Technologies - All Rights Reserved
-#
 
 
 class InfoWidget:
 
-    def __init__(self, screen, color='y'):
+    def __init__(self, screen, color="y"):
         self._screen = screen
         self._color = color
 

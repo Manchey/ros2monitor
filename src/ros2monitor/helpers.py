@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-#
-# Copyright (C) 2022 Hirain Technologies - All Rights Reserved
-#
 
 import importlib
 
@@ -9,14 +6,14 @@ from ament_index_python import get_resource
 
 from rclpy import logging
 
-MSG_MODE = 'msg'
-SRV_MODE = 'srv'
-ACTION_MODE = 'action'
+MSG_MODE = "msg"
+SRV_MODE = "srv"
+ACTION_MODE = "action"
 
 ROSIDL_FILTERS = {
-    MSG_MODE: lambda n: n.startswith('msg/') and n.endswith('.msg'),
-    SRV_MODE: lambda n: n.startswith('srv/') and n.endswith('.srv'),
-    ACTION_MODE: lambda n: n.startswith('action/') and n.endswith('.idl')
+    MSG_MODE: lambda n: n.startswith("msg/") and n.endswith(".msg"),
+    SRV_MODE: lambda n: n.startswith("srv/") and n.endswith(".srv"),
+    ACTION_MODE: lambda n: n.startswith("action/") and n.endswith(".idl"),
 }
 
 
@@ -35,25 +32,25 @@ def _get_rosidl_class_helper(message_type, mode, logger=None):  # noqa: C901
     :returns: The message or service class or None
     """
     if logger is None:
-        logger = logging.get_logger('_get_message_service_class_helper')
+        logger = logging.get_logger("_get_message_service_class_helper")
 
     if mode not in ROSIDL_FILTERS.keys():
-        logger.warn('invalid mode {}'.format(mode))
+        logger.warn("invalid mode {}".format(mode))
         return None
 
-    message_info = message_type.split('/')
+    message_info = message_type.split("/")
     if len(message_info) not in (2, 3):
-        logger.error('Malformed message_type: {}'.format(message_type))
+        logger.error("Malformed message_type: {}".format(message_type))
         return None
     if len(message_info) == 3 and message_info[1] != mode:
-        logger.error('Malformed {} message_type: {}'.format(mode, message_type))
+        logger.error("Malformed {} message_type: {}".format(mode, message_type))
         return None
 
     package = message_info[0]
     base_type = message_info[-1]
 
     try:
-        _, resource_path = get_resource('rosidl_interfaces', package)
+        _, resource_path = get_resource("rosidl_interfaces", package)
     except LookupError:
         return None
     python_pkg = None
@@ -61,9 +58,9 @@ def _get_rosidl_class_helper(message_type, mode, logger=None):  # noqa: C901
 
     try:
         # import the package
-        python_pkg = importlib.import_module('%s.%s' % (package, mode))
+        python_pkg = importlib.import_module("%s.%s" % (package, mode))
     except ImportError:
-        logger.info('Failed to import class: {} as {}.{}'.format(message_type, package, mode))
+        logger.info("Failed to import class: {} as {}.{}".format(message_type, package, mode))
         return None
 
     try:
@@ -71,7 +68,7 @@ def _get_rosidl_class_helper(message_type, mode, logger=None):  # noqa: C901
         return class_val
 
     except AttributeError:
-        logger.info('Failed to load class: {}'.format(message_type))
+        logger.info("Failed to load class: {}".format(message_type))
         return None
 
 
@@ -90,7 +87,7 @@ def get_message_class(message_type):
     if message_type in _message_class_cache:
         return _message_class_cache[message_type]
 
-    logger = logging.get_logger('get_message_class')
+    logger = logging.get_logger("get_message_class")
 
     class_val = _get_rosidl_class_helper(message_type, MSG_MODE, logger)
 

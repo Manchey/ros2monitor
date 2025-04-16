@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-#
-# Copyright (C) 2022 Hirain Technologies - All Rights Reserved
-#
 
 import rclpy.serialization
 from ros2topic.verb.hz import ROSTopicHz
@@ -25,7 +22,7 @@ class TopicInfo:
         self.message_class = None
         self._topic_type = topic_type
         if topic_type is None:
-            self.error = 'No topic types associated with topic: ' % topic_name
+            self.error = "No topic types associated with topic: " % topic_name
         try:
             self.message_class = get_message_class(topic_type)
         except Exception as e:
@@ -48,8 +45,12 @@ class TopicInfo:
         if self.message_class is not None:
             self.monitoring = True
             self._subscriber = self._node.create_subscription(
-                self.message_class, self._topic_name, self.message_callback,
-                qos_profile=10, raw=True)
+                self.message_class,
+                self._topic_name,
+                self.message_callback,
+                qos_profile=10,
+                raw=True,
+            )
 
     def stop_monitoring(self):
         self.monitoring = False
@@ -81,7 +82,7 @@ class TopicInfo:
         if hz_result is not None:
             rate, _, _, _, _ = hz_result
             rate *= 1e9
-        rate_text = '%1.2f' % rate if rate is not None else 'unknown'
+        rate_text = "%1.2f" % rate if rate is not None else "unknown"
         return rate_text
 
     def get_topic_type(self):

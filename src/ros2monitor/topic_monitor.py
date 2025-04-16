@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-#
-# Copyright (C) 2022 Hirain Technologies - All Rights Reserved
-#
 
 from rclpy.node import Node
 
@@ -23,8 +20,10 @@ class TopicMonitor(Node):
 
             new_topics = {}
             for topic_name, topic_types in topic_list:
-                if topic_name not in self._topics \
-                        or self._topics[topic_name]['type'] != topic_types[0]:
+                if (
+                    topic_name not in self._topics
+                    or self._topics[topic_name]["type"] != topic_types[0]
+                ):
                     topic_info = TopicInfo(self, topic_name, topic_types[0])
 
                     message_instance = None
@@ -32,9 +31,9 @@ class TopicMonitor(Node):
                         message_instance = topic_info.message_class()
 
                     new_topics[topic_name] = {
-                        'message': message_instance,
-                        'info': topic_info,
-                        'type': topic_types[0],
+                        "message": message_instance,
+                        "info": topic_info,
+                        "type": topic_types[0],
                     }
                 else:
                     new_topics[topic_name] = self._topics[topic_name]
@@ -50,9 +49,9 @@ class TopicMonitor(Node):
     def get_info(self, topic_name):
         if topic_name not in self._topics:
             return
-        return self._topics[topic_name]['info']
+        return self._topics[topic_name]["info"]
 
     def is_monitoring(self, topic_name):
         if topic_name not in self._topics:
             return False
-        return self._topics[topic_name]['info'].is_monitoring()
+        return self._topics[topic_name]["info"].is_monitoring()

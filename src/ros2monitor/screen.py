@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-#
-# Copyright (C) 2022 Hirain Technologies - All Rights Reserved
-#
 
 import curses
 import os
@@ -23,30 +20,30 @@ class Screen:
     RENDER_TOPIC = 1
     RENDER_INTER_CMD_INFO = 2
 
-    KEY_UP = [ord('w'), ord('k'), curses.KEY_UP]
-    KEY_DOWN = [ord('s'), ord('j'), curses.KEY_DOWN]
-    KEY_LEFT = [ord('a'), ord('h'), curses.KEY_LEFT]
-    KEY_RIGHT = [ord('d'), ord('l'), curses.KEY_RIGHT, 10]  # 10 for ENTER
-    KEY_QUIT = [ord('q'), ord('Q'), 27]  # 27 for ESC
-    KEY_HELP = [ord('H')]
-    KEY_TOPIC = [ord('t')]
-    KEY_NEXT_ITEM = [ord('n')]
-    KEY_PREVIOUS_ITEM = [ord('N')]
-    KEY_OPEN = [ord('o')]
-    KEY_CLOSE = [ord('c')]
+    KEY_UP = [ord("w"), ord("k"), curses.KEY_UP]
+    KEY_DOWN = [ord("s"), ord("j"), curses.KEY_DOWN]
+    KEY_LEFT = [ord("a"), ord("h"), curses.KEY_LEFT]
+    KEY_RIGHT = [ord("d"), ord("l"), curses.KEY_RIGHT, 10]  # 10 for ENTER
+    KEY_QUIT = [ord("q"), ord("Q"), 27]  # 27 for ESC
+    KEY_HELP = [ord("H")]
+    KEY_TOPIC = [ord("t")]
+    KEY_NEXT_ITEM = [ord("n")]
+    KEY_PREVIOUS_ITEM = [ord("N")]
+    KEY_OPEN = [ord("o")]
+    KEY_CLOSE = [ord("c")]
     KEY_NEXT_PAGE = [curses.KEY_NPAGE, 4]  # 4 for ^d
     KEY_PREVIOUS_PAGE = [curses.KEY_PPAGE, 21]  # 21 for ^u
 
     def __init__(self):
         self._state = Screen.RENDER_INTER_CMD_INFO
 
-        self._topic_monitor = TopicMonitor('ros2monitor')
+        self._topic_monitor = TopicMonitor("ros2monitor")
         self._monitor_thread = threading.Thread(target=self.spinner, args=(self._topic_monitor,))
 
         self._handlers = {
             Screen.RENDER_INTER_CMD_INFO: self.info_widget_handle_input,
             Screen.RENDER_TOPIC: self.topic_widget_handle_input,
-            Screen.RENDER_MESSAGE: self.message_widget_handle_input
+            Screen.RENDER_MESSAGE: self.message_widget_handle_input,
         }
         self._can_run = False
         self._refresh_rate = 100
@@ -71,11 +68,11 @@ class Screen:
         curses.init_pair(4, curses.COLOR_WHITE, curses.COLOR_BLACK)
         curses.init_pair(5, curses.COLOR_BLACK, curses.COLOR_WHITE)
         self._color = {
-            'g': curses.color_pair(1),
-            'y': curses.color_pair(2),
-            'r': curses.color_pair(3),
-            'w': curses.color_pair(4),
-            'b': curses.color_pair(5)
+            "g": curses.color_pair(1),
+            "y": curses.color_pair(2),
+            "r": curses.color_pair(3),
+            "w": curses.color_pair(4),
+            "b": curses.color_pair(5),
         }
 
         self._stdscr.refresh()
@@ -96,7 +93,7 @@ class Screen:
 
     def run(self):
         self._monitor_thread.start()
-        while (self._can_run):
+        while self._can_run:
             ch = self._stdscr.getch()
             if ch in Screen.KEY_QUIT:
                 self._can_run = False
@@ -108,7 +105,7 @@ class Screen:
             self._handlers[self._state](ch)
             self.render()
 
-            time.sleep(1/self._refresh_rate)
+            time.sleep(1 / self._refresh_rate)
 
         self.shutdown()
 
@@ -202,9 +199,9 @@ class Screen:
         curses.endwin()
 
     def addstr(self, y, x, content, color):
-        content = ' '.join(content.split('\n'))
+        content = " ".join(content.split("\n"))
         if 0 <= y < curses.LINES and 0 <= x and x < curses.COLS - 1:
-            self._stdscr.addstr(y, x, content[:curses.COLS - x - 1], self._color[color])
+            self._stdscr.addstr(y, x, content[: curses.COLS - x - 1], self._color[color])
 
 
 def main():
@@ -213,18 +210,18 @@ def main():
     try:
         curses.wrapper(screen)
     except curses.error as e:
-        print('Your terminal lacks the ability to clear the screen or position the cursor.')
-        print('\t-current TERM: {}\n\t-curses error: {}'.format(os.environ.get('TERM'), str(e)))
+        print("Your terminal lacks the ability to clear the screen or position the cursor.")
+        print("\t-current TERM: {}\n\t-curses error: {}".format(os.environ.get("TERM"), str(e)))
 
         try:
-            print('Try to force set env TERM to linux and restart ros2monitor')
-            os.environ['TERM'] = 'linux'
+            print("Try to force set env TERM to linux and restart ros2monitor")
+            os.environ["TERM"] = "linux"
             curses.wrapper(screen)
         except curses.error as e:
-            print('Restart failed, curses error: {}'.format(os.environ.get('TERM'), str(e)))
+            print("Restart failed, curses error: {}".format(os.environ.get("TERM"), str(e)))
 
     rclpy.shutdown()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
